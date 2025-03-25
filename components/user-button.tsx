@@ -31,8 +31,8 @@ export function UserButton() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Avatar className="h-10 w-10 cursor-pointer border-1">
-          <AvatarImage src={"/placeholder-user.jpg"} alt="User avatar" />
+        <Avatar className="h-10 w-10 cursor-pointer border-1 hover:scale-110 transition-all duration-300">
+          <AvatarImage src={"/.jpg"} alt="User avatar" />
           <AvatarFallback>{user ? user.firstName.charAt(0) + user.lastName.charAt(0) : "U"}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>

@@ -22,7 +22,7 @@ export default function DashboardPage() {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
+        <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
       </div>
 
       <Tabs defaultValue="overview" className="space-y-4">
@@ -101,7 +101,7 @@ export default function DashboardPage() {
               <CardContent>
                 <div className="space-y-4">
                   <div className="flex items-center gap-4">
-                    <div className="rounded-full w-8 h-8 bg-primary/20 flex items-center justify-center">
+                    <div className="rounded-full w-8 h-8 bg-secondary-foreground/20 flex items-center justify-center">
                       <Activity className="h-4 w-4 text-primary" />
                     </div>
                     <div className="space-y-1">
@@ -111,7 +111,7 @@ export default function DashboardPage() {
                   </div>
 
                   <div className="flex items-center gap-4">
-                    <div className="rounded-full w-8 h-8 bg-primary/20 flex items-center justify-center">
+                    <div className="rounded-full w-8 h-8 bg-secondary-foreground/20 flex items-center justify-center">
                       <Activity className="h-4 w-4 text-primary" />
                     </div>
                     <div className="space-y-1">
@@ -121,7 +121,7 @@ export default function DashboardPage() {
                   </div>
 
                   <div className="flex items-center gap-4">
-                    <div className="rounded-full w-8 h-8 bg-primary/20 flex items-center justify-center">
+                    <div className="rounded-full w-8 h-8 bg-secondary-foreground/20 flex items-center justify-center">
                       <Activity className="h-4 w-4 text-primary" />
                     </div>
                     <div className="space-y-1">

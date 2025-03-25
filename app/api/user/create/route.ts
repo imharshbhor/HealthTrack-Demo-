@@ -6,14 +6,14 @@ import { connectDB } from "@/lib/db";
 export async function POST(req: Request) {
   try {
     await connectDB();
-    const { firstName, lastName, role, email, password } = await req.json();
+    const { firstName, lastName, role, email, password, phone, department, specialization } = await req.json();
     const status = "Active"; // Default status set to Active
 
     const existingUser = await User.findOne({ email });
     if (existingUser) return NextResponse.json({ error: "User already exists" }, { status: 400 });
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ firstName, lastName, role, status, email, password: hashedPassword });
+    const newUser = new User({ firstName, lastName, role, status, email, password: hashedPassword, phone, department, specialization });
 
     await newUser.save();
     return NextResponse.json({ message: "User created successfully" }, { status: 201 });

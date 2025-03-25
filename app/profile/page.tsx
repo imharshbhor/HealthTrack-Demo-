@@ -11,7 +11,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useUserStore } from "@/store/userStore"
 import { useToast } from "@/hooks/use-toast"
-import { ToastAction } from "@/components/ui/toast"
 
 export default function ProfilePage() {
   const router = useRouter()
@@ -119,7 +118,7 @@ export default function ProfilePage() {
 
   return (
     <div className="flex flex-col gap-4 max-w-3xl mx-auto">
-      <h1 className="text-3xl font-bold tracking-tight">Your Profile</h1>
+      {/* <h1 className="text-3xl font-bold tracking-tight">Your Profile</h1> */}
 
       <Tabs defaultValue="profile" className="w-full">
         <TabsList className="grid w-full grid-cols-2">
@@ -134,8 +133,8 @@ export default function ProfilePage() {
               <CardDescription>Update your profile information</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="flex flex-col items-center space-y-2 mb-4">
-                <Avatar className="h-24 w-24">
+              <div className="flex flex-col items-center space-y-2 mb-8 font-semibold">
+                <Avatar className="h-28 w-28">
                   <AvatarImage src="/placeholder-user.jpg" alt="User avatar" />
                   <AvatarFallback>{user ? user.firstName.charAt(0) + user.lastName.charAt(0) : "U"}</AvatarFallback>
                 </Avatar>
@@ -194,8 +193,8 @@ export default function ProfilePage() {
                 </div>
               </div>
             </CardContent>
-            <CardFooter>
-              <Button onClick={handleSaveChanges} disabled={loading}>
+            <CardFooter className="flex justify-end">
+              <Button variant="dark" onClick={handleSaveChanges} disabled={loading}>
                 {loading ? "Saving..." : "Save Changes"}
               </Button>
             </CardFooter>
@@ -222,8 +221,8 @@ export default function ProfilePage() {
                 <Input id="confirm-password" type="password" value={passwordData.confirmPassword} onChange={(e) => setPasswordData({ ...passwordData, confirmPassword: e.target.value })} />
               </div>
             </CardContent>
-            <CardFooter>
-              <Button onClick={handleUpdatePassword} disabled={loading}>
+            <CardFooter className="flex justify-end">
+              <Button variant="dark" onClick={handleUpdatePassword} disabled={loading}>
                 {loading ? "Updating..." : "Update Password"}
               </Button>
             </CardFooter>

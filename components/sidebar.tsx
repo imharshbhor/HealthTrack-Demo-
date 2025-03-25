@@ -4,6 +4,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { LayoutDashboard, Users, UserRound, Settings } from "lucide-react"
+import { AuroraText } from "./magicui/aurora-text"
 
 interface SidebarProps {
   className?: string
@@ -49,7 +50,7 @@ export default function Sidebar({ className }: SidebarProps) {
       <div className="flex h-full flex-col gap-2 p-4">
         <div className="flex h-14 items-center px-4 font-semibold">
           <Link href="/" className="flex items-center gap-2 font-semibold">
-            <span className="text-primary text-xl">HealthTrack</span>
+            <span className="text-primary text-2xl font-bold">Health<AuroraText speed={2}>Track</AuroraText></span>
           </Link>
         </div>
         <nav className="grid gap-1 px-2 pt-4">

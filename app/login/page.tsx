@@ -16,6 +16,9 @@ import Image from "next/image"
 import { Eye, EyeOffIcon } from "lucide-react"
 import { useUserStore } from "@/store/userStore"
 
+import { Particles } from "@/components/magicui/particles";
+import { AuroraText } from "@/components/magicui/aurora-text"
+
 const formSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address" }),
   password: z.string().min(1, { message: "Password is required" }),
@@ -84,12 +87,19 @@ export default function LoginPage() {
 
   return (
     <div className="flex items-center justify-center min-h-full gap-10">
+         <Particles
+        className="absolute inset-0 z-0"
+        quantity={300}
+        ease={80}
+        color={"black"}
+        refresh
+      />
         <div className="hidden md:block">
-        <Image src="/assets/illustrations/Doctor-amico.png" alt="Illustration" layout="fill" objectFit="contain" className="w-full h-full" />
+        <Image src="/assets/illustrations/Doctors-bro.png" className="z-10" alt="Illustration" width={430} height={430}  />
       </div>
-      <Card className="w-full sm:mr-16 max-w-md z-10">
+      <Card className="w-full md:max-w-[22rem] lg:max-w-md z-10 shadow-md">
         <CardHeader className="space-y-4">
-          <CardTitle className="text-2xl font-bold">HealthTrack</CardTitle>
+          <CardTitle className="text-2xl font-bold">Health<AuroraText speed={2}>Track</AuroraText></CardTitle>
           <CardDescription>Enter your credentials to access your account</CardDescription>
         </CardHeader>
         <CardContent>
@@ -144,8 +154,8 @@ export default function LoginPage() {
         <CardFooter className="flex flex-col">
 
         </CardFooter>
-      </Card>
 
+      </Card>
     </div>
   )
 }

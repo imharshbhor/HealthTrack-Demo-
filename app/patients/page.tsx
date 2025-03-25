@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
-import { Search, Plus, Filter } from "lucide-react"
+import { Search, Plus, Filter, Eye } from "lucide-react"
 
 export default function PatientsPage() {
   const router = useRouter()
@@ -79,13 +79,13 @@ export default function PatientsPage() {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold tracking-tight">Patients</h1>
-        <Button>
-          <Plus className="mr-2 h-4 w-4" />
+      {/* <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold tracking-tight">Patients</h1>
+        <Button size="sm">
+          <Plus className="h-4 w-4" />
           Add Patient
         </Button>
-      </div>
+      </div> */}
 
       <Card>
         <CardHeader>
@@ -110,7 +110,7 @@ export default function PatientsPage() {
               <div className="hidden md:block">Age/Gender</div>
               <div className="hidden md:block">Last Visit</div>
               <div className="hidden md:block">Status</div>
-              <div className="text-right">Actions</div>
+              <div className="text-center">Actions</div>
             </div>
 
             {patients.map((patient) => (
@@ -133,11 +133,11 @@ export default function PatientsPage() {
                 </div>
                 <div className="hidden md:block">{patient.lastVisit}</div>
                 <div className="hidden md:block">
-                  <Badge variant={patient.status === "Active" ? "default" : "secondary"}>{patient.status}</Badge>
+                  <Badge variant={patient.status === "Active" ? "default" : "destructive"}>{patient.status}</Badge>
                 </div>
-                <div className="text-right">
+                <div className="text-center">
                   <Button variant="ghost" size="sm" asChild>
-                    <Link href={`/patients/${patient.id}`}>View</Link>
+                    <Link href={`/patients/${patient.id}`}> <Eye />View</Link>
                   </Button>
                 </div>
               </div>
