@@ -1,22 +1,19 @@
 import { NextResponse } from "next/server";
-import { NextRequest } from "next/server";
-// import jwt from "jsonwebtoken";
+import type { NextRequest } from "next/server";
 
 export function middleware(req: NextRequest) {
-//   const token = req.cookies.get("token")?.value;
+  const token = req.cookies.get("token"); 
 
-//   if (!token) {
-//     return NextResponse.redirect(new URL("/login", req.url));
-//   }
+  const protectedRoutes = ["/dashboard", "/users", "/patients", "/questionaries"];
 
-  try {
-    // jwt.verify(token, process.env.JWT_SECRET!);
-    return NextResponse.next();
-  } catch {
+  if (protectedRoutes.some((route) => req.nextUrl.pathname.startsWith(route)) && !token) {
     return NextResponse.redirect(new URL("/login", req.url));
   }
+
+  return NextResponse.next();
 }
 
+// Apply middleware to specific routes
 export const config = {
-  matcher: ["/dashboard/:path*", "/patients/:path*", "/users/:path*", "/profile/:path*", "/settings/:path*"],
-}
+  matcher: ["/dashboard/:path*", "/users/:path*", "/patients/:path*", "/questionaries/:path*"],
+};

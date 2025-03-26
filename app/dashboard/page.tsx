@@ -11,13 +11,7 @@ export default function DashboardPage() {
   const router = useRouter()
   const { user } = useUserStore();
 
-  console.log(user)
-
-  useEffect(() => {
-    if (!user) {
-      router.replace('/')
-    }
-  }, [user, router]);
+ //console.log(user)
 
   return (
     <div className="flex flex-col gap-4">

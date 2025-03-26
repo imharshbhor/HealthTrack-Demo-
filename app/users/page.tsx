@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
-import { Search, Pen, Trash, EllipsisVertical } from "lucide-react"
+import { Search, Pen, Trash, EllipsisVertical, ArrowLeft, ArrowRight } from "lucide-react"
 import { useUserStore } from "@/store/userStore"
 import { AddUserDialog } from "@/components/addUserDialog"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
@@ -15,7 +15,6 @@ import { EditDialog } from "@/components/editUserDialog"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-
 import { useToast } from "@/hooks/use-toast"
 
 interface User {
@@ -31,19 +30,27 @@ export default function UsersPage() {
   const router = useRouter()
   const user = useUserStore()
   const [users, setUsers] = useState<User[]>([])
+  const [filteredUsers, setFilteredUsers] = useState<User[]>([])
   const [selectedUser, setSelectedUser] = useState<User | null>(null)
   const [isEditOpen, setIsEditOpen] = useState(false)
   const [isDeleteOpen, setIsDeleteOpen] = useState(false)
+  const [searchTerm, setSearchTerm] = useState("")
+  const [currentPage, setCurrentPage] = useState(1)
+  const [usersPerPage] = useState(10) // Set the number of users per page
 
   const { toast } = useToast()
 
   useEffect(() => {
-    if (!user) {
-      router.replace("/")
-    } else {
       fetchUsers()
-    }
-  }, [user, router])
+  })
+
+  useEffect(() => {
+    setFilteredUsers(
+      users.filter(user =>
+        `${user.firstName} ${user.lastName}`.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    );
+  }, [searchTerm, users]);
 
   const fetchUsers = async () => {
     try {
@@ -58,6 +65,7 @@ export default function UsersPage() {
       }
       const data = await response.json()
       setUsers(data)
+      setFilteredUsers(data) // Initialize filtered users
     } catch (error) {
       console.error("Error fetching users:", error)
     }
@@ -122,6 +130,7 @@ export default function UsersPage() {
 
     if (response.ok) {
       setUsers(users.filter(user => user._id !== selectedUser._id));
+      setFilteredUsers(filteredUsers.filter(user => user._id !== selectedUser._id)); // Update filtered users
       toast({
         variant: "default",
         title: "User Deleted Successfully",
@@ -139,6 +148,12 @@ export default function UsersPage() {
     setSelectedUser(null);
   }
 
+  // Pagination logic
+  const indexOfLastUser = currentPage * usersPerPage;
+  const indexOfFirstUser = indexOfLastUser - usersPerPage;
+  const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
+  const totalPages = Math.ceil(filteredUsers.length / usersPerPage);
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
@@ -155,7 +170,13 @@ export default function UsersPage() {
           <div className="flex items-center gap-2 mb-4">
             <div className="relative flex-1">
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input type="search" placeholder="Search users..." className="pl-8" />
+              <Input
+                type="search"
+                placeholder="Search users..."
+                className="pl-8"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
             </div>
           </div>
 
@@ -167,7 +188,7 @@ export default function UsersPage() {
               <div className="text-center">Actions</div>
             </div>
 
-            {users.map((user) => (
+            {currentUsers.map((user) => (
               <div key={user._id} className="grid grid-cols-5 gap-4 p-4 text-sm border-b last:border-0 items-center">
                 <div className="col-span-2 flex items-center gap-3">
                   <Avatar>
@@ -208,6 +229,26 @@ export default function UsersPage() {
                 </div>
               </div>
             ))}
+          </div>
+
+          {/* Pagination Controls */}
+          <div className="flex justify-between mt-4">
+            <Button
+              size="sm"
+              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+            >
+                <ArrowLeft />
+              Previous
+            </Button>
+            <Button
+              size="sm"
+              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+              disabled={currentPage === totalPages}
+            >
+              Next
+              <ArrowRight />
+            </Button>
           </div>
         </CardContent>
       </Card>

@@ -5,6 +5,8 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { LogOut, User, Settings } from "lucide-react"
 
+import Cookies from "js-cookie";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,10 +24,11 @@ export function UserButton() {
 
   const handleSignOut = async () => {
     setIsLoading(true)
+    Cookies.remove("token");
+    setUser(null);
     router.push("/login")
     router.refresh()
     setIsLoading(false)
-    setUser(null);
   }
 
   return (

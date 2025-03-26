@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -8,23 +8,13 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
-import { Search, Plus, Filter, Eye } from "lucide-react"
+import { Search, Plus, Filter, Eye, ArrowBigRight, ArrowBigLeft, ArrowLeft, ArrowRight } from "lucide-react"
 
 export default function PatientsPage() {
   const router = useRouter()
-
-//   useEffect(() => {
-//     if (status === "unauthenticated") {
-//       router.push("/login")
-//     }
-//   }, [status, router])
-
-//   if (status === "loading") {
-//     return <div className="flex items-center justify-center h-screen">Loading...</div>
-//   }
-
-  // Mock patients data
-  const patients = [
+  const [currentPage, setCurrentPage] = useState(1)
+  const [patientsPerPage] = useState(5) // Number of patients per page
+  const [patients, setPatients] = useState([
     {
       id: "1",
       name: "John Doe",
@@ -75,18 +65,79 @@ export default function PatientsPage() {
       status: "Active",
       avatar: "/placeholder-user.jpg",
     },
-  ]
+    {
+      id: "6",
+      name: "Alice Smith",
+      email: "alice@example.com",
+      age: 30,
+      gender: "Female",
+      lastVisit: "2023-03-01",
+      status: "Active",
+      avatar: "/placeholder-user.jpg",
+    },
+    {
+      id: "7",
+      name: "David Johnson",
+      email: "david@example.com",
+      age: 40,
+      gender: "Male",
+      lastVisit: "2023-02-20",
+      status: "Inactive",
+      avatar: "/placeholder-user.jpg",
+    },
+    {
+      id: "8",
+      name: "Laura Wilson",
+      email: "laura@example.com",
+      age: 50,
+      gender: "Female",
+      lastVisit: "2023-03-10",
+      status: "Active",
+      avatar: "/placeholder-user.jpg",
+    },
+    {
+      id: "9",
+      name: "James Brown",
+      email: "james@example.com",
+      age: 35,
+      gender: "Male",
+      lastVisit: "2023-03-15",
+      status: "Active",
+      avatar: "/placeholder-user.jpg",
+    },
+    {
+      id: "10",
+      name: "Sophia Davis",
+      email: "sophia@example.com",
+      age: 28,
+      gender: "Female",
+      lastVisit: "2023-03-12",
+      status: "Inactive",
+      avatar: "/placeholder-user.jpg",
+    },
+  ])
+
+  // Calculate the current patients to display
+  const indexOfLastPatient = currentPage * patientsPerPage
+  const indexOfFirstPatient = indexOfLastPatient - patientsPerPage
+  const currentPatients = patients.slice(indexOfFirstPatient, indexOfLastPatient)
+
+  const totalPages = Math.ceil(patients.length / patientsPerPage)
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1)
+    }
+  }
+
+  const handlePrevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1)
+    }
+  }
 
   return (
     <div className="flex flex-col gap-4">
-      {/* <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold tracking-tight">Patients</h1>
-        <Button size="sm">
-          <Plus className="h-4 w-4" />
-          Add Patient
-        </Button>
-      </div> */}
-
       <Card>
         <CardHeader>
           <CardTitle>Patient Records</CardTitle>
@@ -113,7 +164,7 @@ export default function PatientsPage() {
               <div className="text-center">Actions</div>
             </div>
 
-            {patients.map((patient) => (
+            {currentPatients.map((patient) => (
               <div key={patient.id} className="grid grid-cols-6 gap-4 p-4 text-sm border-b last:border-0 items-center">
                 <div className="col-span-2 flex items-center gap-3">
                   <Avatar>
@@ -142,6 +193,11 @@ export default function PatientsPage() {
                 </div>
               </div>
             ))}
+          </div>
+
+          <div className="flex justify-between mt-4">
+            <Button size="sm" onClick={handlePrevPage} disabled={currentPage === 1}><ArrowLeft /> Previous</Button>
+            <Button size="sm" onClick={handleNextPage} disabled={currentPage === totalPages}>Next <ArrowRight /></Button>
           </div>
         </CardContent>
       </Card>
