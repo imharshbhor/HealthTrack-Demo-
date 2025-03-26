@@ -9,13 +9,13 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Search, Pen, Trash, EllipsisVertical, ArrowLeft, ArrowRight } from "lucide-react"
 import { useUserStore } from "@/store/userStore"
-import { AddUserDialog } from "@/components/addUserDialog"
+import { AddUserDialog } from "@/components/user/addUserDialog"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { EditDialog } from "@/components/editUserDialog"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useToast } from "@/hooks/use-toast"
+import { getUsers, updateUser, deleteUser } from "@/services/user-service" // Import the necessary services
 
 interface User {
   _id: string;
@@ -42,7 +42,7 @@ export default function UsersPage() {
 
   useEffect(() => {
       fetchUsers()
-  })
+  }, [])
 
   useEffect(() => {
     setFilteredUsers(
@@ -54,16 +54,7 @@ export default function UsersPage() {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch('/api/user/getUsers', {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${process.env.JWT_SECRET}`,
-        },
-      })
-      if (!response.ok) {
-        throw new Error('Failed to fetch users')
-      }
-      const data = await response.json()
+      const data = await getUsers(); // Use the getUsers service
       setUsers(data)
       setFilteredUsers(data) // Initialize filtered users
     } catch (error) {
@@ -83,23 +74,15 @@ export default function UsersPage() {
       status: selectedUser.status,
     };
 
-    const response = await fetch(`/api/user/update`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.JWT_SECRET}`,
-      },
-      body: JSON.stringify(updatedUser),
-    });
-
-    if (response.ok) {
+    try {
+      await updateUser(updatedUser); // Use the updateUser service
       fetchUsers();
       toast({
           variant: "default",
           title: "User Edited Successfully",
           description: new Date().toLocaleString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true }),
       });
-    } else {
+    } catch (error) {
       toast({
           variant: "destructive",
           title: "Failed to edit user",
@@ -119,16 +102,8 @@ export default function UsersPage() {
   const handleDelete = async () => {
     if (!selectedUser) return;
 
-    const response = await fetch(`/api/user/delete`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.JWT_SECRET}`,
-      },
-      body: JSON.stringify({ id: selectedUser._id }), // Send the user ID in the request body
-    });
-
-    if (response.ok) {
+    try {
+      await deleteUser(selectedUser._id); // Use the deleteUser service
       setUsers(users.filter(user => user._id !== selectedUser._id));
       setFilteredUsers(filteredUsers.filter(user => user._id !== selectedUser._id)); // Update filtered users
       toast({
@@ -136,7 +111,7 @@ export default function UsersPage() {
         title: "User Deleted Successfully",
         description: new Date().toLocaleString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true }),
       });
-    } else {
+    } catch (error) {
       toast({
         variant: "destructive",
         title: "User Deletion Failed",
@@ -156,7 +131,7 @@ export default function UsersPage() {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between px-1">
         <h1 className="text-2xl font-bold tracking-tight">Users</h1>
         <AddUserDialog />
       </div>
@@ -199,7 +174,7 @@ export default function UsersPage() {
                   </Avatar>
                   <div>
                     <div className="font-medium">{`${user.firstName} ${user.lastName}`}</div>
-                    <div className="text-sm text-gray-500">{user.email}</div>
+                    <div className="text-sm hidden lg:block text-gray-500">{user.email}</div>
                   </div>
                 </div>
 

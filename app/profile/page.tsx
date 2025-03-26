@@ -132,9 +132,9 @@ export default function ProfilePage() {
               <CardTitle>Profile Information</CardTitle>
               <CardDescription>Update your profile information</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex flex-col items-center space-y-2 mb-8 font-semibold">
-                <Avatar className="h-28 w-28">
+            <CardContent className="space-y-2">
+              <div className="flex flex-col items-center mb-8 font-semibold">
+                <Avatar className="h-32 w-32">
                   <AvatarImage src="/placeholder-user.jpg" alt="User avatar" />
                   <AvatarFallback>{user ? user.firstName.charAt(0) + user.lastName.charAt(0) : "U"}</AvatarFallback>
                 </Avatar>

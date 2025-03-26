@@ -12,10 +12,11 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Plus } from "lucide-react"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
 import { useState } from "react"
 import { useToast } from "@/hooks/use-toast"
 import { useRouter } from "next/navigation"
+import { createUser } from "@/services/user-service" // Import the createUser service
 
 export function AddUserDialog() {
   const [formData, setFormData] = useState({
@@ -42,39 +43,34 @@ export function AddUserDialog() {
   };
 
   const handleSubmit = async () => {
-    const response = await fetch('/api/user/create', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.JWT_SECRET}`,
-      },
-      body: JSON.stringify(formData),
-    });
+    try {
+      const response = await createUser(formData); // Use the createUser service
 
-    if (response.ok) {
+      if (response) {
         toast({
-            variant: "default",
-            title: "User Added Successfully",
-            description: new Date().toLocaleString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true }),
+          variant: "default",
+          title: "User Added Successfully",
+          description: new Date().toLocaleString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true }),
         });
-          window.location.href = window.location.href;
-    } else {
-        toast({
-            variant: "destructive",
-            title: "User Addition Failed",
-            description: "There was an error adding the user. Please try again.",
-        });
-        setFormData({
-            firstName: '',
-            lastName: '',
-            email: '',
-            phone: '',
-            password: '',
-            role: '',
-            department: '',
-            specialization: '',
-          });
-          window.location.href = window.location.href;
+        window.location.href = window.location.href;
+      }
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "User Addition Failed",
+        description: "There was an error adding the user. Please try again.",
+      });
+      setFormData({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        password: '',
+        role: '',
+        department: '',
+        specialization: '',
+      });
+      window.location.href = window.location.href;
     }
   };
 

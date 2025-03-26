@@ -8,114 +8,22 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
-import { Search, Plus, Filter, Eye, ArrowBigRight, ArrowBigLeft, ArrowLeft, ArrowRight } from "lucide-react"
+import { Search, Filter, Eye, ArrowLeft, ArrowRight } from "lucide-react"
+import { patientService } from "@/services/patient-service" // Import the patient service
 
 export default function PatientsPage() {
   const router = useRouter()
   const [currentPage, setCurrentPage] = useState(1)
   const [patientsPerPage] = useState(5) // Number of patients per page
-  const [patients, setPatients] = useState([
-    {
-      id: "1",
-      name: "John Doe",
-      email: "john@example.com",
-      age: 45,
-      gender: "Male",
-      lastVisit: "2023-03-15",
-      status: "Active",
-      avatar: "/placeholder-user.jpg",
-    },
-    {
-      id: "2",
-      name: "Sarah Johnson",
-      email: "sarah@example.com",
-      age: 32,
-      gender: "Female",
-      lastVisit: "2023-03-10",
-      status: "Active",
-      avatar: "/placeholder-user.jpg",
-    },
-    {
-      id: "3",
-      name: "Michael Brown",
-      email: "michael@example.com",
-      age: 58,
-      gender: "Male",
-      lastVisit: "2023-02-28",
-      status: "Inactive",
-      avatar: "/placeholder-user.jpg",
-    },
-    {
-      id: "4",
-      name: "Emily Davis",
-      email: "emily@example.com",
-      age: 27,
-      gender: "Female",
-      lastVisit: "2023-03-05",
-      status: "Active",
-      avatar: "/placeholder-user.jpg",
-    },
-    {
-      id: "5",
-      name: "Robert Wilson",
-      email: "robert@example.com",
-      age: 62,
-      gender: "Male",
-      lastVisit: "2023-03-12",
-      status: "Active",
-      avatar: "/placeholder-user.jpg",
-    },
-    {
-      id: "6",
-      name: "Alice Smith",
-      email: "alice@example.com",
-      age: 30,
-      gender: "Female",
-      lastVisit: "2023-03-01",
-      status: "Active",
-      avatar: "/placeholder-user.jpg",
-    },
-    {
-      id: "7",
-      name: "David Johnson",
-      email: "david@example.com",
-      age: 40,
-      gender: "Male",
-      lastVisit: "2023-02-20",
-      status: "Inactive",
-      avatar: "/placeholder-user.jpg",
-    },
-    {
-      id: "8",
-      name: "Laura Wilson",
-      email: "laura@example.com",
-      age: 50,
-      gender: "Female",
-      lastVisit: "2023-03-10",
-      status: "Active",
-      avatar: "/placeholder-user.jpg",
-    },
-    {
-      id: "9",
-      name: "James Brown",
-      email: "james@example.com",
-      age: 35,
-      gender: "Male",
-      lastVisit: "2023-03-15",
-      status: "Active",
-      avatar: "/placeholder-user.jpg",
-    },
-    {
-      id: "10",
-      name: "Sophia Davis",
-      email: "sophia@example.com",
-      age: 28,
-      gender: "Female",
-      lastVisit: "2023-03-12",
-      status: "Inactive",
-      avatar: "/placeholder-user.jpg",
-    },
-  ])
+  const [patients, setPatients] = useState([]) // State to hold patient data
+
+  useEffect(() => {
+    async function fetchPatients() {
+      const patientData: any = await patientService.getPatients() // Fetch patients from the service
+      setPatients(patientData)
+    }
+    fetchPatients()
+  }, [])
 
   // Calculate the current patients to display
   const indexOfLastPatient = currentPage * patientsPerPage
@@ -157,16 +65,16 @@ export default function PatientsPage() {
 
           <div className="border rounded-md">
             <div className="grid grid-cols-6 gap-4 p-4 text-sm font-medium border-b">
-              <div className="col-span-2">Patient</div>
-              <div className="hidden md:block">Age/Gender</div>
+              <div className="col-span-3">Patient</div>
+              <div className="hidden sm:block">Age / Gender</div>
               <div className="hidden md:block">Last Visit</div>
-              <div className="hidden md:block">Status</div>
-              <div className="text-center">Actions</div>
+              {/* <div className="hidden md:block">Status</div> */}
+              <div className="text-center ml-24 md:ml-0 sm:text-end">Actions</div>
             </div>
 
             {currentPatients.map((patient) => (
               <div key={patient.id} className="grid grid-cols-6 gap-4 p-4 text-sm border-b last:border-0 items-center">
-                <div className="col-span-2 flex items-center gap-3">
+                <div className="col-span-3 flex items-center gap-3">
                   <Avatar>
                     <AvatarImage src={patient.avatar} alt={patient.name} />
                     <AvatarFallback>
@@ -179,17 +87,17 @@ export default function PatientsPage() {
                     <div className="text-muted-foreground">{patient.email}</div>
                   </div>
                 </div>
-                <div className="hidden md:block">
+                <div className="w-32 hidden sm:block">
                   {patient.age} / {patient.gender}
                 </div>
                 <div className="hidden md:block">{patient.lastVisit}</div>
-                <div className="hidden md:block">
+                {/* <div className="hidden md:block">
                   <Badge variant={patient.status === "Active" ? "default" : "destructive"}>{patient.status}</Badge>
-                </div>
-                <div className="text-center">
-                  <Button variant="ghost" size="sm" asChild>
-                    <Link href={`/patients/${patient.id}`}> <Eye />View</Link>
-                  </Button>
+                </div> */}
+                <div className="flex justify-end ml-32 md:ml-1 sm:mr-3">
+                  <div>
+                    <Link href={`/patients/${patient.id}`}><Eye /></Link>
+                  </div>
                 </div>
               </div>
             ))}

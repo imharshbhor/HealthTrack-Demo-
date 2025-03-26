@@ -1,328 +1,274 @@
 "use client"
 
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Badge } from "@/components/ui/badge"
-import { ChevronLeft, Edit, Calendar, FileText, Activity, Pill } from "lucide-react"
+import { ChevronLeft, Heart, Activity, FileText, Calendar } from "lucide-react"
+import type { Level1Data, Level2Data, HistoryRecord, PatientData, Appointment } from "@/types/patient"
+import { PatientInfo } from "@/components/patient/patient-info"
+import { Level1Screening } from "@/components/patient/level1-screening"
+import { Level2Screening } from "@/components/patient/level2-screening"
+import { PatientHistory } from "@/components/patient/patient-history"
+import { PatientAppointments } from "@/components/patient/patient-appointments"
 
-export default function PatientProfilePage({ params }: { params: { id: string } }) {
+export default function PatientProfilePage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter()
+  const [resolvedParams, setResolvedParams] = useState<{ id: string } | null>(null)
 
-//   useEffect(() => {
-//     if (status === "unauthenticated") {
-//       router.push("/login")
-//     }
-//   }, [status, router])
+  // State for the screening data
+  const [level1Data, setLevel1Data] = useState<Level1Data | null>(null)
+  const [level1History, setLevel1History] = useState<Level1Data[]>([])
+  const [level2Data, setLevel2Data] = useState<Level2Data | null>(null)
+  const [level2History, setLevel2History] = useState<Level2Data[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [patient, setPatient] = useState<PatientData | null>(null)
+  const [appointments, setAppointments] = useState<Appointment[]>([])
 
-//   if (status === "loading") {
-//     return <div className="flex items-center justify-center h-screen">Loading...</div>
-//   }
+  useEffect(() => {
+    const fetchParams = async () => {
+      const resolved = await params
+      setResolvedParams(resolved)
+    }
+    fetchParams()
+  }, [params])
 
-  // Mock patient data - in a real app, you would fetch this from your database
-  const patient = {
-    id: params.id,
-    name: "John Doe",
-    email: "john@example.com",
-    phone: "+1 (555) 123-4567",
-    dateOfBirth: "1978-05-12",
-    age: 45,
-    gender: "Male",
-    address: "123 Main St, Anytown, USA",
-    bloodType: "O+",
-    allergies: ["Penicillin", "Peanuts"],
-    lastVisit: "2023-03-15",
-    status: "Active",
-    avatar: "/placeholder-user.jpg",
-  }
+  // Mock function to fetch data
+  useEffect(() => {
+    if (!resolvedParams) return
 
-  // Mock medical history
-  const medicalHistory = [
+    const fetchData = async () => {
+      setIsLoading(true)
+      try {
+        // In a real app, you would fetch from your API
+        // Simulate API delay
+        setTimeout(() => {
+          // Set patient data
+          setPatient({
+            id: resolvedParams.id,
+            name: "John Doe",
+            email: "john@example.com",
+            phone: "+91 8833982267",
+            dateOfBirth: "1978-05-12",
+            age: 45,
+            gender: "Male",
+            address: "123 Main St, Anytown, India",
+            bloodType: "O+",
+            allergies: ["Penicillin", "Peanuts"],
+            lastVisit: "2023-03-15",
+            status: "Active",
+            avatar: "/placeholder-user.jpg",
+          })
+
+          // Set Level 1 data
+          setLevel1Data({
+            height: 175, // cm
+            weight: 70, // kg
+            bloodPressure: {
+              systolic: 120,
+              diastolic: 80,
+            },
+            temperature: 101.2, // F
+            bpm: 97,
+            spo2: 92, // %
+            glucose: 95, // mg/dL
+            bmi: 22.9,
+            ecg: "/placeholder.svg?height=300&width=600",
+            recordedAt: new Date().toISOString(),
+          })
+
+          // Set Level 1 history
+          setLevel1History([
+            {
+              height: 175,
+              weight: 72,
+              bloodPressure: { systolic: 125, diastolic: 82 },
+              temperature: 98.4,
+              bpm: 75,
+              spo2: 97,
+              glucose: 100,
+              bmi: 23.5,
+              ecg: "/placeholder.svg?height=300&width=600",
+              recordedAt: "2023-02-15T10:30:00Z",
+            },
+            {
+              height: 175,
+              weight: 74,
+              bloodPressure: { systolic: 130, diastolic: 85 },
+              temperature: 98.8,
+              bpm: 78,
+              spo2: 96,
+              glucose: 105,
+              bmi: 24.2,
+              ecg: "/placeholder.svg?height=300&width=600",
+              recordedAt: "2023-01-10T14:15:00Z",
+            },
+          ])
+
+          // Set Level 2 data
+          setLevel2Data({
+            pulmonary: {
+              fev6: 3.2,
+              fev1: 2.8,
+              fev1_fvc: 0.85,
+            },
+            renal: {
+              uricAcid: 5.2,
+              creatinine: 0.9,
+              urea: 15,
+            },
+            lipid: {
+              tc: 180,
+              hdl: 55,
+              tg: 120,
+              tc_hdl: 3.3,
+              ldl: 100,
+            },
+            recordedAt: new Date().toISOString(),
+          })
+
+          // Set Level 2 history
+          setLevel2History([
+            {
+              pulmonary: { fev6: 3.1, fev1: 2.7, fev1_fvc: 0.84 },
+              renal: { uricAcid: 5.4, creatinine: 1.0, urea: 16 },
+              lipid: { tc: 190, hdl: 50, tg: 130, tc_hdl: 3.8, ldl: 110 },
+              recordedAt: "2023-02-15T10:30:00Z",
+            },
+            {
+              pulmonary: { fev6: 3.0, fev1: 2.6, fev1_fvc: 0.83 },
+              renal: { uricAcid: 5.6, creatinine: 1.1, urea: 17 },
+              lipid: { tc: 200, hdl: 45, tg: 140, tc_hdl: 4.4, ldl: 120 },
+              recordedAt: "2023-01-10T14:15:00Z",
+            },
+          ])
+
+          // Set appointments
+          setAppointments([
+            {
+              id: "1",
+              date: "April 10, 2023",
+              time: "10:00 AM",
+              doctor: "Dr. Jane Smith",
+              department: "Cardiology",
+              status: "Scheduled",
+            },
+            {
+              id: "2",
+              date: "March 15, 2023",
+              time: "2:30 PM",
+              doctor: "Dr. Jane Smith",
+              department: "Cardiology",
+              status: "Completed",
+            },
+            {
+              id: "3",
+              date: "January 10, 2023",
+              time: "11:15 AM",
+              doctor: "Dr. Michael Brown",
+              department: "General Medicine",
+              status: "Completed",
+            },
+          ])
+
+          setIsLoading(false)
+        }, 1000)
+      } catch (error) {
+        console.error("Error fetching data:", error)
+        setIsLoading(false)
+      }
+    }
+
+    fetchData()
+  }, [resolvedParams])
+
+  // Mock history records
+  const historyRecords: HistoryRecord[] = [
     {
       id: "1",
       date: "2023-03-15",
-      diagnosis: "Hypertension",
-      doctor: "Dr. Jane Smith",
-      notes: "Blood pressure 140/90. Prescribed medication and lifestyle changes.",
+      type: "Level 1",
+      summary: "Routine Checkup",
+      details: "All vitals normal. Blood pressure slightly elevated.",
     },
     {
       id: "2",
       date: "2023-01-10",
-      diagnosis: "Influenza",
-      doctor: "Dr. Michael Brown",
-      notes: "Fever, cough, and fatigue. Prescribed rest and fluids.",
+      type: "Level 2",
+      summary: "Comprehensive Screening",
+      details: "Lipid profile shows elevated LDL. Recommended dietary changes.",
     },
     {
       id: "3",
       date: "2022-11-05",
-      diagnosis: "Annual Checkup",
-      doctor: "Dr. Jane Smith",
-      notes: "All vitals normal. Recommended regular exercise.",
-    },
-  ]
-
-  // Mock appointments
-  const appointments = [
-    {
-      id: "1",
-      date: "2023-04-10",
-      time: "10:00 AM",
-      doctor: "Dr. Jane Smith",
-      department: "Cardiology",
-      status: "Scheduled",
-    },
-    {
-      id: "2",
-      date: "2023-03-15",
-      time: "2:30 PM",
-      doctor: "Dr. Jane Smith",
-      department: "Cardiology",
-      status: "Completed",
-    },
-    {
-      id: "3",
-      date: "2023-01-10",
-      time: "11:15 AM",
-      doctor: "Dr. Michael Brown",
-      department: "General Medicine",
-      status: "Completed",
-    },
-  ]
-
-  // Mock medications
-  const medications = [
-    {
-      id: "1",
-      name: "Lisinopril",
-      dosage: "10mg",
-      frequency: "Once daily",
-      startDate: "2023-03-15",
-      endDate: "Ongoing",
-    },
-    {
-      id: "2",
-      name: "Aspirin",
-      dosage: "81mg",
-      frequency: "Once daily",
-      startDate: "2023-03-15",
-      endDate: "Ongoing",
-    },
-    {
-      id: "3",
-      name: "Tamiflu",
-      dosage: "75mg",
-      frequency: "Twice daily",
-      startDate: "2023-01-10",
-      endDate: "2023-01-15",
+      type: "Level 1",
+      summary: "Follow-up Visit",
+      details: "Blood pressure normalized. Weight reduced by 2kg.",
     },
   ]
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-1">
         <Button variant="ghost" size="sm" asChild>
           <Link href="/patients">
-            <ChevronLeft className="h-4 w-4" />
-            Back
+            <ChevronLeft className="h-8 w-8" />
           </Link>
         </Button>
-        <h1 className="text-3xl font-bold tracking-tight">Patient Profile</h1>
+        <h1 className="text-2xl font-bold tracking-tight">Patient Profile</h1>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-7">
-        <Card className="md:col-span-2">
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <CardTitle>Patient Information</CardTitle>
-              <Button variant="ghost" size="icon">
-                <Edit className="h-4 w-4" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent className="flex flex-col items-center text-center">
-            <Avatar className="h-24 w-24 mb-4">
-              <AvatarImage src={patient.avatar} alt={patient.name} />
-              <AvatarFallback>
-                {patient.name.charAt(0)}
-                {patient.name.split(" ")[1]?.charAt(0)}
-              </AvatarFallback>
-            </Avatar>
-            <h2 className="text-xl font-bold">{patient.name}</h2>
-            <p className="text-muted-foreground mb-4">{patient.email}</p>
-            <Badge className="mb-6">{patient.status}</Badge>
+      {isLoading ? (
+        <div className="flex justify-center items-center h-[70vh]">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+      </div>
+      ) : (
+        <div className="grid gap-4 md:grid-cols-7">
+          <div className="md:col-span-7 lg:col-span-2">
+            <PatientInfo patient={patient} />
+          </div>
 
-            <div className="w-full text-left space-y-2">
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Age:</span>
-                <span>{patient.age}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Gender:</span>
-                <span>{patient.gender}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Date of Birth:</span>
-                <span>{patient.dateOfBirth}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Phone:</span>
-                <span>{patient.phone}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Blood Type:</span>
-                <span>{patient.bloodType}</span>
-              </div>
-              <div className="flex flex-col gap-1 mt-2">
-                <span className="text-muted-foreground">Address:</span>
-                <span className="text-right">{patient.address}</span>
-              </div>
-              <div className="flex flex-col gap-1 mt-2">
-                <span className="text-muted-foreground">Allergies:</span>
-                <div className="flex flex-wrap gap-1 justify-end">
-                  {patient.allergies.map((allergy) => (
-                    <Badge key={allergy} variant="outline">
-                      {allergy}
-                    </Badge>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+          <div className="md:col-span-7 lg:col-span-5 space-y-4">
+            <Tabs defaultValue="level1" className="w-full">
+              <TabsList className="grid grid-cols-4 mb-4">
+                <TabsTrigger value="level1">
+                  <Heart className="h-4 w-4 mr-2" />
+                  Level 1
+                </TabsTrigger>
+                <TabsTrigger value="level2">
+                  <Activity className="h-4 w-4 mr-2" />
+                  Level 2
+                </TabsTrigger>
+                <TabsTrigger value="history">
+                  <FileText className="h-4 w-4 mr-2" />
+                  History
+                </TabsTrigger>
+                <TabsTrigger value="appointments">
+                  <Calendar className="h-4 w-4 mr-2" />
+                  Appointments
+                </TabsTrigger>
+              </TabsList>
 
-        <div className="md:col-span-5 space-y-4">
-          <Tabs defaultValue="history" className="w-full">
-            <TabsList className="grid grid-cols-4 mb-4">
-              <TabsTrigger value="history">
-                <FileText className="h-4 w-4 mr-2" />
-                Medical History
-              </TabsTrigger>
-              <TabsTrigger value="appointments">
-                <Calendar className="h-4 w-4 mr-2" />
-                Appointments
-              </TabsTrigger>
-              <TabsTrigger value="medications">
-                <Pill className="h-4 w-4 mr-2" />
-                Medications
-              </TabsTrigger>
-              <TabsTrigger value="vitals">
-                <Activity className="h-4 w-4 mr-2" />
-                Vitals
-              </TabsTrigger>
-            </TabsList>
+              <TabsContent value="level1">
+                <Level1Screening level1Data={level1Data} level1History={level1History} isLoading={isLoading} />
+              </TabsContent>
 
-            <TabsContent value="history">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Medical History</CardTitle>
-                  <CardDescription>Patient's medical history and past diagnoses</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {medicalHistory.map((record) => (
-                      <div key={record.id} className="border rounded-lg p-4">
-                        <div className="flex justify-between items-start mb-2">
-                          <div>
-                            <h3 className="font-semibold">{record.diagnosis}</h3>
-                            <p className="text-sm text-muted-foreground">{record.doctor}</p>
-                          </div>
-                          <Badge variant="outline">{record.date}</Badge>
-                        </div>
-                        <p className="text-sm">{record.notes}</p>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
+              <TabsContent value="level2">
+                <Level2Screening level2Data={level2Data} level2History={level2History} isLoading={isLoading} />
+              </TabsContent>
 
-            <TabsContent value="appointments">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Appointments</CardTitle>
-                  <CardDescription>Past and upcoming appointments</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {appointments.map((appointment) => (
-                      <div key={appointment.id} className="border rounded-lg p-4">
-                        <div className="flex justify-between items-start mb-2">
-                          <div>
-                            <h3 className="font-semibold">{appointment.department}</h3>
-                            <p className="text-sm text-muted-foreground">{appointment.doctor}</p>
-                          </div>
-                          <Badge variant={appointment.status === "Scheduled" ? "default" : "secondary"}>
-                            {appointment.status}
-                          </Badge>
-                        </div>
-                        <div className="flex items-center gap-2 text-sm">
-                          <Calendar className="h-4 w-4 text-muted-foreground" />
-                          <span>{appointment.date}</span>
-                          <span>•</span>
-                          <span>{appointment.time}</span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
+              <TabsContent value="history">
+                <PatientHistory historyRecords={historyRecords} />
+              </TabsContent>
 
-            <TabsContent value="medications">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Medications</CardTitle>
-                  <CardDescription>Current and past medications</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {medications.map((medication) => (
-                      <div key={medication.id} className="border rounded-lg p-4">
-                        <div className="flex justify-between items-start mb-2">
-                          <div>
-                            <h3 className="font-semibold">{medication.name}</h3>
-                            <p className="text-sm text-muted-foreground">
-                              {medication.dosage} • {medication.frequency}
-                            </p>
-                          </div>
-                          <Badge variant={medication.endDate === "Ongoing" ? "default" : "secondary"}>
-                            {medication.endDate === "Ongoing" ? "Current" : "Past"}
-                          </Badge>
-                        </div>
-                        <div className="flex items-center gap-2 text-sm">
-                          <Calendar className="h-4 w-4 text-muted-foreground" />
-                          <span>{medication.startDate}</span>
-                          <span>→</span>
-                          <span>{medication.endDate}</span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-            <TabsContent value="vitals">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Vitals</CardTitle>
-                  <CardDescription>Patient's vital signs over time</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="h-[300px] w-full bg-muted/20 rounded-md flex items-center justify-center">
-                    <Activity className="h-8 w-8 text-muted-foreground" />
-                    <span className="ml-2 text-muted-foreground">Vitals chart would go here</span>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
+              <TabsContent value="appointments">
+                <PatientAppointments appointments={appointments} />
+              </TabsContent>
+            </Tabs>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   )
 }

@@ -4,7 +4,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useState } from "react"
 import { cn } from "@/lib/utils"
-import { LayoutDashboard, Users, UserRound, ChevronDown, HeartPulse } from "lucide-react"
+import { LayoutDashboard, Users, UserRound, HeartPulse, BadgeAlert } from "lucide-react"
 import { AuroraText } from "./magicui/aurora-text"
 
 interface SidebarProps {
@@ -40,6 +40,12 @@ export default function Sidebar({ className }: SidebarProps) {
       active: pathname.startsWith("/patients"),
     },
     {
+      label: "Risk Calculator",
+      icon: BadgeAlert,
+      href: "/risk-calculator",
+      active: pathname.startsWith("/risk-calculator"),
+    },
+    {
       label: "Health Questionaries",
       icon: HeartPulse,
       hasSubRoutes: true, // Flag for submenu
@@ -57,7 +63,7 @@ export default function Sidebar({ className }: SidebarProps) {
   ].filter(route => route.href || route.hasSubRoutes) // Ensure valid routes
 
   return (
-    <div className={cn("hidden border-r bg-background md:block w-64", className)}>
+    <div className={cn("hidden border-r bg-background lg:block w-64", className)}>
       <div className="flex h-full flex-col gap-2 p-4">
         <div className="flex h-14 items-center px-4 font-semibold">
           <Link href="/" className="flex items-center gap-2 font-semibold">

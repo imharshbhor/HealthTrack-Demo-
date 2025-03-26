@@ -17,6 +17,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 import Image from "next/image"
 import { Eye, EyeOffIcon } from "lucide-react"
 import { useUserStore } from "@/store/userStore"
+import { loginUser } from "@/services/user-service"; // Import the loginUser service
 
 import { Particles } from "@/components/magicui/particles";
 import { AuroraText } from "@/components/magicui/aurora-text"
@@ -47,24 +48,8 @@ export default function LoginPage() {
     setError(null)
 
     try {
-      const response = await fetch('/api/user/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${process.env.JWT_SECRET}`,
-        },
-        body: JSON.stringify({
-          email: values.email,
-          password: values.password,
-        }),
-      });
+      const data = await loginUser(values.email, values.password); // Use the loginUser service
 
-      if (!response.ok) {
-        setError("Wrong Credentials. Please try again.");
-        throw new Error('Login failed');
-      }
-
-      const data = await response.json();
       setUser({
         id: data.user._id,
         firstName: data.user.firstName,
@@ -82,7 +67,6 @@ export default function LoginPage() {
       router.push('/dashboard');
       router.refresh()
     } catch (error) {
-    //   console.error("Login error:", error)
       setError("Wrong Credentials. Please try again.")
     } finally {
       setIsLoading(false)
@@ -149,7 +133,15 @@ export default function LoginPage() {
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="w-full" disabled={isLoading}>
+              <Button type="submit" className="w-full relative" disabled={isLoading}>
+                {isLoading && (
+                  <span className="pr-2">
+                    <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                    </svg>
+                  </span>
+                )}
                 {isLoading ? "Logging in..." : "Login"}
               </Button>
             </form>
