@@ -14,7 +14,7 @@ export function PatientHistory({ historyRecords }: PatientHistoryProps) {
         <CardDescription>Patient's screening history and records.</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
+        <div className="flex flex-col gap-3">
           {historyRecords.map((record) => (
             <div key={record.id} className="border rounded-lg p-4">
               <div className="flex justify-between items-start mb-2">

@@ -28,7 +28,7 @@ export function Level1Screening({ level1Data, level1History, isLoading }: Level1
         ) : level1Data ? (
           <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="border rounded-lg p-4">
+              <div className="border rounded-lg p-5">
                 <div className="flex items-center gap-2 mb-2">
                   <Ruler className="h-5 w-5 text-muted-foreground" />
                   <h3 className="font-semibold">Height</h3>
@@ -36,7 +36,7 @@ export function Level1Screening({ level1Data, level1History, isLoading }: Level1
                 <p className="text-xl font-bold">{level1Data.height} cm</p>
               </div>
 
-              <div className="border rounded-lg p-4">
+              <div className="border rounded-lg p-5">
                 <div className="flex items-center gap-2 mb-2">
                   <Weight className="h-5 w-5 text-muted-foreground" />
                   <h3 className="font-semibold">Weight</h3>
@@ -44,7 +44,7 @@ export function Level1Screening({ level1Data, level1History, isLoading }: Level1
                 <p className="text-xl font-bold">{level1Data.weight} kg</p>
               </div>
 
-              <div className="border rounded-lg p-4">
+              <div className="border rounded-lg p-5">
                 <div className="flex items-center gap-2 mb-2">
                   <Activity className="h-5 w-5 text-muted-foreground" />
                   <h3 className="font-semibold">BMI <span className="text-xs text-muted-foreground">(18.5-24.9)</span></h3>
@@ -55,7 +55,7 @@ export function Level1Screening({ level1Data, level1History, isLoading }: Level1
                 </p>
               </div>
 
-              <div className="border rounded-lg p-4">
+              <div className="border rounded-lg p-5">
                 <div className="flex items-center gap-2 mb-2">
                   <Activity className="h-5 w-5 text-muted-foreground" />
                   <h3 className="font-semibold">Blood Pressure <span className="text-xs text-muted-foreground">(120/80)</span></h3>
@@ -71,7 +71,7 @@ export function Level1Screening({ level1Data, level1History, isLoading }: Level1
                 </p>
               </div>
 
-              <div className="border rounded-lg p-4">
+              <div className="border rounded-lg p-5">
                 <div className="flex items-center gap-2 mb-2">
                   <Thermometer className="h-5 w-5 text-muted-foreground" />
                   <h3 className="font-semibold">Temperature <span className="text-xs text-muted-foreground">(97-99°F)</span></h3>
@@ -81,7 +81,7 @@ export function Level1Screening({ level1Data, level1History, isLoading }: Level1
                 </p>
               </div>
 
-              <div className="border rounded-lg p-4">
+              <div className="border rounded-lg p-5">
                 <div className="flex items-center gap-2 mb-2">
                   <Heart className="h-5 w-5 text-muted-foreground" />
                   <h3 className="font-semibold">Heart Rate <span className="text-xs text-muted-foreground">(60-100)</span></h3>
@@ -91,7 +91,7 @@ export function Level1Screening({ level1Data, level1History, isLoading }: Level1
                 </p>
               </div>
 
-              <div className="border rounded-lg p-4">
+              <div className="border rounded-lg p-5">
                 <div className="flex items-center gap-2 mb-2">
                   <Activity className="h-5 w-5 text-muted-foreground" />
                   <h3 className="font-semibold">Oxygen <span className="text-xs text-muted-foreground">(95-100%)</span></h3>
@@ -101,7 +101,7 @@ export function Level1Screening({ level1Data, level1History, isLoading }: Level1
                 </p>
               </div>
 
-              <div className="border rounded-lg p-4">
+              <div className="border rounded-lg p-5">
                 <div className="flex items-center gap-2 mb-2">
                   <Activity className="h-5 w-5 text-muted-foreground" />
                   <h3 className="font-semibold">Glucose <span className="text-xs text-muted-foreground">(&lt;140)</span></h3>
@@ -112,7 +112,7 @@ export function Level1Screening({ level1Data, level1History, isLoading }: Level1
                 </p>
               </div>
 
-              <div className="border rounded-lg p-4">
+              <div className="border rounded-lg p-5">
                 <div className="flex items-center gap-2 mb-2">
                   <Activity className="h-5 w-5 text-muted-foreground" />
                   <h3 className="font-semibold">ECG</h3>
@@ -128,7 +128,7 @@ export function Level1Screening({ level1Data, level1History, isLoading }: Level1
 
             </div>
 
-            {/* <div className="border rounded-lg p-4">
+            {/* <div className="border rounded-lg p-5">
               <div className="flex items-center gap-2 mb-4">
                 <Activity className="h-5 w-5 text-muted-foreground" />
                 <h3 className="font-semibold">ECG</h3>

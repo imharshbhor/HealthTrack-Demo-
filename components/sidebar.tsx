@@ -45,21 +45,21 @@ export default function Sidebar({ className }: SidebarProps) {
       href: "/risk-calculator",
       active: pathname.startsWith("/risk-calculator"),
     },
-    {
-      label: "Health Questionaries",
-      icon: HeartPulse,
-      hasSubRoutes: true, // Flag for submenu
-      subRoutes: [
-        { label: "Health Disease Screening", href: "/questionaries/disease-screening", active: pathname === "/questionaries/disease-screening" },
-        { label: "Final Oral Cancer", href: "/questionaries/oral-cancer", active: pathname === "/questionaries/oral-cancer" },
-        { label: "Final Hypertension", href: "/questionaries/hypertension", active: pathname === "/questionaries/hypertension" },
-        { label: "Final Diabetes", href: "/questionaries/diabetes", active: pathname === "/questionaries/diabetes" },
-        { label: "Final COPD", href: "/questionaries/copd", active: pathname === "/questionaries/copd" },
-        { label: "Final Breast Cancer", href: "/questionaries/breast-cancer", active: pathname === "/questionaries/breast-cancer" },
-        { label: "Chronic Kidney Disease", href: "/questionaries/kidney-disease", active: pathname === "/questionaries/kidney-disease" },
-        { label: "Risk Prediction", href: "/questionaries/risk-prediction", active: pathname === "/questionaries/risk-prediction" },
-      ],
-    },
+    // {
+    //   label: "Health Questionaries",
+    //   icon: HeartPulse,
+    //   hasSubRoutes: true, // Flag for submenu
+    //   subRoutes: [
+    //     { label: "Health Disease Screening", href: "/questionaries/disease-screening", active: pathname === "/questionaries/disease-screening" },
+    //     { label: "Final Oral Cancer", href: "/questionaries/oral-cancer", active: pathname === "/questionaries/oral-cancer" },
+    //     { label: "Final Hypertension", href: "/questionaries/hypertension", active: pathname === "/questionaries/hypertension" },
+    //     { label: "Final Diabetes", href: "/questionaries/diabetes", active: pathname === "/questionaries/diabetes" },
+    //     { label: "Final COPD", href: "/questionaries/copd", active: pathname === "/questionaries/copd" },
+    //     { label: "Final Breast Cancer", href: "/questionaries/breast-cancer", active: pathname === "/questionaries/breast-cancer" },
+    //     { label: "Chronic Kidney Disease", href: "/questionaries/kidney-disease", active: pathname === "/questionaries/kidney-disease" },
+    //     { label: "Risk Prediction", href: "/questionaries/risk-prediction", active: pathname === "/questionaries/risk-prediction" },
+    //   ],
+    // },
   ].filter(route => route.href || route.hasSubRoutes) // Ensure valid routes
 
   return (

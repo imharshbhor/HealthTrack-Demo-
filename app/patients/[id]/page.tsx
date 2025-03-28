@@ -47,11 +47,11 @@ export default function PatientProfilePage({ params }: { params: Promise<{ id: s
           // Set patient data
           setPatient({
             id: resolvedParams.id,
-            name: "John Doe",
-            email: "john@example.com",
+            name: "Harsh Bhor",
+            email: "harsh@example.com",
             phone: "+91 8833982267",
-            dateOfBirth: "1978-05-12",
-            age: 45,
+            dateOfBirth: "2002-08-07",
+            age: 22,
             gender: "Male",
             address: "123 Main St, Anytown, India",
             bloodType: "O+",
@@ -231,7 +231,7 @@ export default function PatientProfilePage({ params }: { params: Promise<{ id: s
 
           <div className="md:col-span-7 lg:col-span-5 space-y-4">
             <Tabs defaultValue="level1" className="w-full">
-              <TabsList className="grid grid-cols-4 mb-4">
+              <TabsList className="grid grid-cols-3 mb-4">
                 <TabsTrigger value="level1">
                   <Heart className="h-4 w-4 mr-2" />
                   Level 1
@@ -244,10 +244,10 @@ export default function PatientProfilePage({ params }: { params: Promise<{ id: s
                   <FileText className="h-4 w-4 mr-2" />
                   History
                 </TabsTrigger>
-                <TabsTrigger value="appointments">
+                {/* <TabsTrigger value="appointments">
                   <Calendar className="h-4 w-4 mr-2" />
                   Appointments
-                </TabsTrigger>
+                </TabsTrigger> */}
               </TabsList>
 
               <TabsContent value="level1">
@@ -262,9 +262,9 @@ export default function PatientProfilePage({ params }: { params: Promise<{ id: s
                 <PatientHistory historyRecords={historyRecords} />
               </TabsContent>
 
-              <TabsContent value="appointments">
+              {/* <TabsContent value="appointments">
                 <PatientAppointments appointments={appointments} />
-              </TabsContent>
+              </TabsContent> */}
             </Tabs>
           </div>
         </div>

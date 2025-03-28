@@ -7,24 +7,30 @@ import { Dot } from 'lucide-react';
 const PatientDemographicChart = () => {
   const [demographicData, setDemographicData] = useState([]);
 
-  useEffect(() => {
-    const fetchDemographicData = async () => {
-      const patients = await patientService.getPatients();
-      const genderCounts = patients.reduce((acc, patient) => {
-        acc[patient.gender] = (acc[patient.gender] || 0) + 1;
-        return acc;
-      }, {});
+//   useEffect(() => {
+//     const fetchDemographicData = async () => {
+//       const patients = await patientService.getPatients();
+//       const genderCounts = patients.reduce((acc, patient) => {
+//         acc[patient.gender] = (acc[patient.gender] || 0) + 1;
+//         return acc;
+//       }, {});
 
-      const data = Object.keys(genderCounts).map(gender => ({
-        name: gender,
-        value: genderCounts[gender],
-      }));
+//       const data = Object.keys(genderCounts).map(gender => ({
+//         name: gender,
+//         value: genderCounts[gender],
+//       }));
 
-      setDemographicData(data);
-    };
+//       setDemographicData(data);
+//     };
 
-    fetchDemographicData();
-  }, []);
+
+//     fetchDemographicData();
+//   }, []);
+
+useEffect(() => {
+const data: any = [{ name: 'Female', value: 70 }, { name: 'Male', value: 54 }];
+setDemographicData(data);
+}, []);
 
   const COLORS = ['#FF6384', 'hsl(var(--secondary-foreground))', '#FFCE56'];
 
@@ -52,11 +58,11 @@ const PatientDemographicChart = () => {
       </CardContent>
       <CardFooter className="flex justify-center">
       <div className='flex justify-center mt-4'>
-            <span className='flex items-center text-[#FF6384] px-2 rounded'>
-              <Dot color={COLORS[0]} /> Male
-            </span>
             <span className='flex items-center ml-4 text-[#36A2EB] px-2 rounded'>
-              <Dot color={COLORS[1]} /> Female
+              <Dot color={COLORS[1]} /> Male
+            </span>
+            <span className='flex items-center text-[#FF6384] px-2 rounded'>
+              <Dot color={COLORS[0]} /> Female
             </span>
           </div>
       </CardFooter>
