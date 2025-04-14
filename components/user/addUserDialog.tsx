@@ -43,37 +43,37 @@ export function AddUserDialog() {
   };
 
   const handleSubmit = async () => {
-    try {
-      const response = await createUser(formData); // Use the createUser service
+    // try {
+    //   const response = await createUser(formData); // Use the createUser service
 
-      if (response) {
-        toast({
-          variant: "default",
-          title: "User Added Successfully",
-          description: new Date().toLocaleString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true }),
-        });
-        window.location.href = window.location.href;
-      }
-    } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "User Addition Failed",
-        description: "There was an error adding the user. Please try again.",
-      });
-      setFormData({
-        firstName: '',
-        lastName: '',
-        email: '',
-        phone: '',
-        password: '',
-        role: '',
-        department: '',
-        specialization: '',
-      });
-      window.location.href = window.location.href;
-    }
+    //   if (response) {
+    //     toast({
+    //       variant: "default",
+    //       title: "User Added Successfully",
+    //       description: new Date().toLocaleString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true }),
+    //     });
+    //     window.location.href = window.location.href;
+    //   }
+    // } catch (error) {
+    //   toast({
+    //     variant: "destructive",
+    //     title: "User Addition Failed",
+    //     description: "There was an error adding the user. Please try again.",
+    //   });
+    //   setFormData({
+    //     firstName: '',
+    //     lastName: '',
+    //     email: '',
+    //     phone: '',
+    //     password: '',
+    //     role: '',
+    //     department: '',
+    //     specialization: '',
+    //   });
+    //   window.location.href = window.location.href;
+    // }
   };
-
+  
   return (
     <Dialog>
       <DialogTrigger asChild>

@@ -49,70 +49,70 @@ export default function ProfilePage() {
 
   const handleSaveChanges = async () => {
     setLoading(true);
-    const response = await fetch('/api/user/update', {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.JWT_SECRET}`, // Assuming JWT_SECRET is set in your environment
-      },
-      body: JSON.stringify({
-        id: user.id,
-        ...formData,
-      }),
-    });
+    // const response = await fetch('/api/user/update', {
+    //   method: 'PUT',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     'Authorization': `Bearer ${process.env.JWT_SECRET}`, // Assuming JWT_SECRET is set in your environment
+    //   },
+    //   body: JSON.stringify({
+    //     id: user.id,
+    //     ...formData,
+    //   }),
+    // });
 
-    if (response.ok) {
-      const data = await response.json();
-      setUser({ ...user, ...formData });
-      toast({
-        variant: "default",
-        title: "Profile Updated Successfully",
-        description: new Date().toLocaleString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true }),
-      })
-    } else {
-      console.error('Failed to update user');
-    }
+    // if (response.ok) {
+    //   const data = await response.json();
+    //   setUser({ ...user, ...formData });
+    //   toast({
+    //     variant: "default",
+    //     title: "Profile Updated Successfully",
+    //     description: new Date().toLocaleString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true }),
+    //   })
+    // } else {
+    //   console.error('Failed to update user');
+    // }
     setLoading(false);
   }
 
   const handleUpdatePassword = async () => {
     setLoading(true);
-    if (passwordData.newPassword !== passwordData.confirmPassword) {
-      toast({
-        variant: "destructive",
-        title: "Password Mismatch",
-        description: "New password and confirmation do not match.",
-      });
-      setLoading(false);
-      return;
-    }
+    // if (passwordData.newPassword !== passwordData.confirmPassword) {
+    //   toast({
+    //     variant: "destructive",
+    //     title: "Password Mismatch",
+    //     description: "New password and confirmation do not match.",
+    //   });
+    //   setLoading(false);
+    //   return;
+    // }
 
-    const response = await fetch('/api/user/update', {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.JWT_SECRET}`,
-      },
-      body: JSON.stringify({
-        id: user.id,
-        password: passwordData.newPassword,
-      }),
-    });
+    // const response = await fetch('/api/user/update', {
+    //   method: 'PUT',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     'Authorization': `Bearer ${process.env.JWT_SECRET}`,
+    //   },
+    //   body: JSON.stringify({
+    //     id: user.id,
+    //     password: passwordData.newPassword,
+    //   }),
+    // });
 
-    if (response.ok) {
-      toast({
-        variant: "default",
-        title: "Password Updated Successfully",
-        description: new Date().toLocaleString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true }),
-      });
-    } else {
-      console.error('Failed to update password');
-      toast({
-        variant: "destructive",
-        title: "Password Update Failed",
-        description: "Please check your current password and try again.",
-      });
-    }
+    // if (response.ok) {
+    //   toast({
+    //     variant: "default",
+    //     title: "Password Updated Successfully",
+    //     description: new Date().toLocaleString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true }),
+    //   });
+    // } else {
+    //   console.error('Failed to update password');
+    //   toast({
+    //     variant: "destructive",
+    //     title: "Password Update Failed",
+    //     description: "Please check your current password and try again.",
+    //   });
+    // }
     setLoading(false);
   }
 

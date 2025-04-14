@@ -54,41 +54,49 @@ export default function UsersPage() {
 
   const fetchUsers = async () => {
     try {
-      const data = await getUsers(); // Use the getUsers service
-      setUsers(data)
-      setFilteredUsers(data) // Initialize filtered users
+      const demoUser = {
+        _id: "demo",
+        firstName: "Demo",
+        lastName: "User",
+        email: "demo@mail.com",
+        role: "Admin",
+        status: "Active",
+      };
+      const usersWithDemo = [demoUser];
+      setUsers(usersWithDemo);
+      setFilteredUsers(usersWithDemo); // Initialize filtered users
     } catch (error) {
-      console.error("Error fetching users:", error)
+      console.error("Error fetching users:", error);
     }
   }
 
   const handleEdit = async () => {
     if (!selectedUser) return
 
-    const updatedUser = {
-      id: selectedUser._id,
-      firstName: selectedUser.firstName,
-      lastName: selectedUser.lastName,
-      email: selectedUser.email,
-      role: selectedUser.role,
-      status: selectedUser.status,
-    };
+    // const updatedUser = {
+    //   id: selectedUser._id,
+    //   firstName: selectedUser.firstName,
+    //   lastName: selectedUser.lastName,
+    //   email: selectedUser.email,
+    //   role: selectedUser.role,
+    //   status: selectedUser.status,
+    // };
 
-    try {
-      await updateUser(updatedUser); // Use the updateUser service
-      fetchUsers();
-      toast({
-          variant: "default",
-          title: "User Edited Successfully",
-          description: new Date().toLocaleString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true }),
-      });
-    } catch (error) {
-      toast({
-          variant: "destructive",
-          title: "Failed to edit user",
-          description: new Date().toLocaleString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true }),
-      });
-    }
+    // try {
+    //   await updateUser(updatedUser); // Use the updateUser service
+    //   fetchUsers();
+    //   toast({
+    //       variant: "default",
+    //       title: "User Edited Successfully",
+    //       description: new Date().toLocaleString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true }),
+    //   });
+    // } catch (error) {
+    //   toast({
+    //       variant: "destructive",
+    //       title: "Failed to edit user",
+    //       description: new Date().toLocaleString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true }),
+    //   });
+    // }
 
     setIsEditOpen(false);
     setSelectedUser(null);
@@ -102,22 +110,22 @@ export default function UsersPage() {
   const handleDelete = async () => {
     if (!selectedUser) return;
 
-    try {
-      await deleteUser(selectedUser._id); // Use the deleteUser service
-      setUsers(users.filter(user => user._id !== selectedUser._id));
-      setFilteredUsers(filteredUsers.filter(user => user._id !== selectedUser._id)); // Update filtered users
-      toast({
-        variant: "default",
-        title: "User Deleted Successfully",
-        description: new Date().toLocaleString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true }),
-      });
-    } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "User Deletion Failed",
-        description: new Date().toLocaleString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true }),
-      });
-    }
+    // try {
+    //   await deleteUser(selectedUser._id); // Use the deleteUser service
+    //   setUsers(users.filter(user => user._id !== selectedUser._id));
+    //   setFilteredUsers(filteredUsers.filter(user => user._id !== selectedUser._id)); // Update filtered users
+    //   toast({
+    //     variant: "default",
+    //     title: "User Deleted Successfully",
+    //     description: new Date().toLocaleString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true }),
+    //   });
+    // } catch (error) {
+    //   toast({
+    //     variant: "destructive",
+    //     title: "User Deletion Failed",
+    //     description: new Date().toLocaleString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true }),
+    //   });
+    // }
 
     setIsDeleteOpen(false);
     setSelectedUser(null);

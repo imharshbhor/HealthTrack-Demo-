@@ -47,8 +47,8 @@ export default function PatientProfilePage({ params }: { params: Promise<{ id: s
           // Set patient data
           setPatient({
             id: resolvedParams.id,
-            name: "Harsh Bhor",
-            email: "harsh@example.com",
+            name: "Demo Patient",
+            email: "demo@example.com",
             phone: "+91 8833982267",
             dateOfBirth: "2002-08-07",
             age: 22,

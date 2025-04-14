@@ -17,7 +17,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 import Image from "next/image"
 import { Eye, EyeOffIcon } from "lucide-react"
 import { useUserStore } from "@/store/userStore"
-import { loginUser } from "@/services/user-service"; // Import the loginUser service
+// import { loginUser } from "@/services/user-service";
 
 import { Particles } from "@/components/magicui/particles";
 import { AuroraText } from "@/components/magicui/aurora-text"
@@ -38,8 +38,8 @@ export default function LoginPage() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      email: "demo@mail.com", // Use demo credentials
+      password: "d3mo",   // Use demo credentials
     },
   })
 
@@ -48,24 +48,45 @@ export default function LoginPage() {
     setError(null)
 
     try {
-      const data = await loginUser(values.email, values.password); // Use the loginUser service
+      // Check for demo credentials
+      if (values.email === "demo@mail.com" && values.password === "d3mo") {
+        setUser({
+          id: "demo-id",
+          firstName: "Demo",
+          lastName: "User",
+          email: "demo@mail.com",
+          role: "demo-role",
+          phone: "123-456-7890",
+          department: "Demo Department",
+          specialization: "Demo Specialization",
+          status: "active"
+        });
 
-      setUser({
-        id: data.user._id,
-        firstName: data.user.firstName,
-        lastName: data.user.lastName,
-        email: data.user.email,
-        role: data.user.role,
-        phone: data.user.phone,
-        department: data.user.department,
-        specialization: data.user.specialization,
-        status: data.user.status
-      });
+        Cookies.set("token", "demo-token", { expires: 1, path: "/" });
 
-      Cookies.set("token", data.token, { expires: 1, path: "/" }); // Expires in 1 day
+        router.push('/dashboard');
+        router.refresh();
+      } else {
+        // Use the loginUser service for non-demo credentials
+        // const data = await loginUser(values.email, values.password);
 
-      router.push('/dashboard');
-      router.refresh()
+        // setUser({
+        //   id: data.user._id,
+        //   firstName: data.user.firstName,
+        //   lastName: data.user.lastName,
+        //   email: data.user.email,
+        //   role: data.user.role,
+        //   phone: data.user.phone,
+        //   department: data.user.department,
+        //   specialization: data.user.specialization,
+        //   status: data.user.status
+        // });
+
+        // Cookies.set("token", data.token, { expires: 1, path: "/" });
+
+        router.push('/dashboard');
+        router.refresh();
+      }
     } catch (error) {
       setError("Wrong Credentials. Please try again.")
     } finally {
@@ -148,9 +169,13 @@ export default function LoginPage() {
           </Form>
         </CardContent>
         <CardFooter className="flex flex-col">
-
+          <p className="text-center text-sm text-gray-500 mt-4">
+            This is a demo website. Use the credentials: demo@mail.com / d3mo
+          </p>
+          <p className="text-center text-sm text-gray-500 mt-2">
+            Intended for Desktop & Tablet only.
+          </p>
         </CardFooter>
-
       </Card>
     </div>
   )
